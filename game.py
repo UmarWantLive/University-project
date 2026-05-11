@@ -76,4 +76,66 @@ class Game:
             records["best_score"] = self.right_score
 
         if self.left_score >= WIN_SCORE:
+            save_records(records)
+
+            records["matches_played"] += 1
+
+        if winner == "Left Player":
+            records["left_player_wins"] += 1
+        else:
+            records["right_player_wins"] += 1
+
+        save_records(records)
+
+        add_match_to_history({
+            "winner": winner,
+            "score": f"{self.left_score}:{self.right_score}",
+            "mode": self.mode
+        })
+
+    def draw_middle_line(self):
+        for y in range(0, HEIGHT, 40):
+            pygame.draw.rect(
+                self.screen,
+                WHITE,
+                (WIDTH // 2 - 5, y, 10, 20)
+            )
+
+    def draw_scores(self):
+        left = self.font.render(
+            str(self.left_score),
+            True,
+            WHITE
+        )
+
+        right = self.font.render(
+            str(self.right_score),
+            True,
+            WHITE
+        )
+
+        self.screen.blit(left, (400, 50))
+        self.screen.blit(right, (560, 50))
+
+    def update(self):
+        self.ball.move()
+
+        if self.mode == "AI":
+            self.update_ai()
+
+        self.collisions()
+        self.scoring()
+
+    def draw(self):
+        self.screen.fill(BLACK)
+
+        self.draw_middle_line()
+
+        self.left_paddle.draw(self.screen)
+        self.right_paddle.draw(self.screen)
+
+        self.ball.draw(self.screen)
+
+        self.draw_scores()
+
         pygame.display.flip()
