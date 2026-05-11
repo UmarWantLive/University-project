@@ -57,6 +57,7 @@ class Game:
             self.ball.speed_x *= -1
 
     def scoring(self):
+
         records = load_records()
 
         if self.ball.rect.left <= 0:
@@ -76,22 +77,12 @@ class Game:
             records["best_score"] = self.right_score
 
         if self.left_score >= WIN_SCORE:
-            save_records(records)
+            self.finish_match("Left Player")
 
-            records["matches_played"] += 1
-
-        if winner == "Left Player":
-            records["left_player_wins"] += 1
-        else:
-            records["right_player_wins"] += 1
+        if self.right_score >= WIN_SCORE:
+            self.finish_match("Right Player")
 
         save_records(records)
-
-        add_match_to_history({
-            "winner": winner,
-            "score": f"{self.left_score}:{self.right_score}",
-            "mode": self.mode
-        })
 
     def draw_middle_line(self):
         for y in range(0, HEIGHT, 40):
