@@ -1,5 +1,7 @@
 {
     "best_score": 0,
     "matches_played": 0,
-    "last_winner": "None"
+    "left_player_wins": 0,
+    "right_player_wins": 0,
+    "total_goals": 0
 }

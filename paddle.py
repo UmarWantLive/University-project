@@ -1,6 +1,7 @@
 import pygame
 from config import *
 
+
 class Paddle:
     def __init__(self, x, y, speed):
         self.rect = pygame.Rect(x, y, PADDLE_WIDTH, PADDLE_HEIGHT)

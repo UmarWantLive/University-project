@@ -1,54 +1,59 @@
 import pygame
-import sys
-
-from config import *
-from menu import Menu
-from game import Game
-
-pygame.init()
-
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-
-pygame.display.set_caption("Pong Coursework")
-
-clock = pygame.time.Clock()
-
-menu = Menu(screen)
-
-game = Game(screen)
-
-in_menu = True
-
-while True:
-
-    clock.tick(FPS)
-
-    for event in pygame.event.get():
-
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-
-        if event.type == pygame.KEYDOWN:
-
-            if in_menu:
-
                 if event.key == pygame.K_RETURN:
-                    in_menu = False
 
+                    option = menu.options[menu.selected]
+
+                    if option == "START VS AI":
+                        game = Game(screen, "AI")
+                        state = "GAME"
+
+                    elif option == "START PVP":
+                        game = Game(screen, "PVP")
+                        state = "GAME"
+
+                    elif option == "STATISTICS":
+                        state = "STATISTICS"
+
+                    elif option == "MATCH HISTORY":
+                        state = "HISTORY"
+
+                    elif option == "EXIT":
+                        pygame.quit()
+                        sys.exit()
+
+            elif state == "STATISTICS":
                 if event.key == pygame.K_ESCAPE:
-                    pygame.quit()
-                    sys.exit()
+                    state = "MENU"
 
-            else:
-
+            elif state == "HISTORY":
                 if event.key == pygame.K_ESCAPE:
-                    game.pause = not game.pause
+                    state = "MENU"
 
-    if in_menu:
+            elif state == "GAME_OVER":
+                if event.key == pygame.K_RETURN:
+                    state = "MENU"
+
+    if state == "MENU":
         menu.draw()
 
-    else:
+    elif state == "STATISTICS":
+        stats_screen.draw()
+
+    elif state == "HISTORY":
+        history_screen.draw()
+
+    elif state == "GAME":
+
         game.handle_input()
         game.update()
         game.draw()
+
+        if game.finished:
+            state = "GAME_OVER"
+
+    elif state == "GAME_OVER":
+        game_over_screen.draw(
+            game.winner,
+            game.left_score,
+            game.right_score
+        )

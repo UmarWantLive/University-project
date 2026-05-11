@@ -1,9 +1,11 @@
 import pygame
 import random
+
 from config import *
 
+
 class Ball:
-    def __init__(self, speed):
+    def __init__(self):
         self.rect = pygame.Rect(
             WIDTH // 2,
             HEIGHT // 2,
@@ -11,8 +13,8 @@ class Ball:
             BALL_SIZE
         )
 
-        self.speed_x = random.choice([-speed, speed])
-        self.speed_y = random.choice([-speed, speed])
+        self.speed_x = random.choice([-6, 6])
+        self.speed_y = random.choice([-6, 6])
 
     def move(self):
         self.rect.x += self.speed_x
@@ -24,11 +26,11 @@ class Ball:
         if self.rect.bottom >= HEIGHT:
             self.speed_y *= -1
 
-    def draw(self, screen):
-        pygame.draw.ellipse(screen, WHITE, self.rect)
-
     def reset(self):
         self.rect.center = (WIDTH // 2, HEIGHT // 2)
 
-        self.speed_x *= random.choice([-1, 1])
-        self.speed_y *= random.choice([-1, 1])
+        self.speed_x = random.choice([-6, 6])
+        self.speed_y = random.choice([-6, 6])
+
+    def draw(self, screen):
+        pygame.draw.ellipse(screen, WHITE, self.rect)
