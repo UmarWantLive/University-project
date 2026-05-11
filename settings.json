@@ -1,0 +1,6 @@
+{
+    "ball_speed": 6,
+    "paddle_speed": 7,
+    "difficulty": "normal",
+    "volume": 0.5
+}
