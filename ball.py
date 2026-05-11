@@ -33,7 +33,7 @@ class Ball:
             (self.rect.centerx, self.rect.centery)
         )
 
-        if len(self.trail) > 15:
+        if len(self.trail) > 8:
             self.trail.pop(0)        
 
     def reset(self):
@@ -43,13 +43,26 @@ class Ball:
         self.speed_y = random.choice([-6, 6])
 
     def draw(self, screen):
-        pygame.draw.ellipse(screen, WHITE, self.rect)
 
-        for pos in self.trail:
+        # красивый trail
+        for index, pos in enumerate(self.trail):
+
+            alpha = index / len(self.trail)
+
+            size = int(8 * alpha)
+
+            color = (
+                int(100 * alpha),
+                int(180 * alpha),
+                int(255 * alpha)
+            )
 
             pygame.draw.circle(
                 screen,
-                (100, 100, 100),
+                color,
                 pos,
-                6
+                max(size, 1)
             )
+
+        # основной мяч
+        pygame.draw.ellipse(screen, WHITE, self.rect)
