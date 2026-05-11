@@ -55,6 +55,21 @@ class Game:
 
         if self.ball.rect.colliderect(self.right_paddle.rect):
             self.ball.speed_x *= -1
+    def finish_match(self, winner):
+
+        self.finished = True
+        self.winner = winner
+
+        records = load_records()
+
+        records["matches_played"] += 1
+
+        if winner == "Left Player":
+            records["left_player_wins"] += 1
+
+        else:
+            records["right_player_wins"] += 1
+
 
     def scoring(self):
 
@@ -83,7 +98,7 @@ class Game:
             self.finish_match("Right Player")
 
         save_records(records)
-
+    
     def draw_middle_line(self):
         for y in range(0, HEIGHT, 40):
             pygame.draw.rect(
