@@ -28,6 +28,7 @@ class Game:
         self.finished = False
         self.winner = ""
         self.particles = []
+        self.can_spawn_particles = True
 
     def handle_input(self):
         keys = pygame.key.get_pressed()
@@ -53,19 +54,41 @@ class Game:
             self.right_paddle.move_down()
 
     def collisions(self):
-        for _ in range(15):
+
+        # столкновение с левой ракеткой
+        if self.ball.rect.colliderect(self.left_paddle.rect):
+
+            self.ball.speed_x *= -1
+
+            # убираем залипание
+            self.ball.rect.left = self.left_paddle.rect.right
+
+            if self.can_spawn_particles:
+                self.spawn_particles()
+                self.can_spawn_particles = False
+
+        # столкновение с правой ракеткой
+        if self.ball.rect.colliderect(self.right_paddle.rect):
+
+            self.ball.speed_x *= -1
+
+            # убираем залипание
+            self.ball.rect.right = self.right_paddle.rect.left
+
+            if self.can_spawn_particles:
+                self.spawn_particles()
+                self.can_spawn_particles = False
+
+    def spawn_particles(self):
+
+        for _ in range(20):
+
             self.particles.append(
                 Particle(
                     self.ball.rect.centerx,
                     self.ball.rect.centery
                 )
             )
-
-        if self.ball.rect.colliderect(self.left_paddle.rect):
-            self.ball.speed_x *= -1
-        if self.ball.rect.colliderect(self.right_paddle.rect):
-            self.ball.speed_x *= -1
-
     def finish_match(self, winner):
 
         self.finished = True
@@ -137,16 +160,20 @@ class Game:
     def update(self):
         self.ball.move()
 
+        # разрешаем снова спавн, когда мяч в центре
+        if abs(self.ball.rect.centerx - WIDTH // 2) < 50:
+            self.can_spawn_particles = True
+
         if self.mode == "AI":
             self.update_ai()
 
         self.collisions()
         self.scoring()
-        
+
         for particle in self.particles:
             particle.update()
 
-            self.particles = [
+        self.particles = [
                 p for p in self.particles
                 if p.life > 0
             ]
@@ -155,8 +182,7 @@ class Game:
 
     def draw(self):
 
-        for particle in self.particles:
-            particle.draw(self.screen)
+
         
         self.screen.fill(BLACK)
 
@@ -166,6 +192,9 @@ class Game:
         self.right_paddle.draw(self.screen)
 
         self.ball.draw(self.screen)
+        
+        for particle in self.particles:
+            particle.draw(self.screen)
 
         self.draw_scores()
 
