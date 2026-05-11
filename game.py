@@ -1,7 +1,9 @@
 import pygame
+import particles
 
 from paddle import Paddle
 from ball import Ball
+from particles import Particle
 
 from config import *
 from storage import *
@@ -25,6 +27,7 @@ class Game:
 
         self.finished = False
         self.winner = ""
+        self.particles = []
 
     def handle_input(self):
         keys = pygame.key.get_pressed()
@@ -50,11 +53,19 @@ class Game:
             self.right_paddle.move_down()
 
     def collisions(self):
+        for _ in range(15):
+            self.particles.append(
+                Particle(
+                    self.ball.rect.centerx,
+                    self.ball.rect.centery
+                )
+            )
+
         if self.ball.rect.colliderect(self.left_paddle.rect):
             self.ball.speed_x *= -1
-
         if self.ball.rect.colliderect(self.right_paddle.rect):
             self.ball.speed_x *= -1
+
     def finish_match(self, winner):
 
         self.finished = True
@@ -131,8 +142,22 @@ class Game:
 
         self.collisions()
         self.scoring()
+        
+        for particle in self.particles:
+            particle.update()
+
+            self.particles = [
+                p for p in self.particles
+                if p.life > 0
+            ]
+
+
 
     def draw(self):
+
+        for particle in self.particles:
+            particle.draw(self.screen)
+        
         self.screen.fill(BLACK)
 
         self.draw_middle_line()
