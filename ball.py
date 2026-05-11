@@ -4,8 +4,11 @@ import random
 from config import *
 
 
+
 class Ball:
     def __init__(self):
+        self.trail = []
+
         self.rect = pygame.Rect(
             WIDTH // 2,
             HEIGHT // 2,
@@ -26,6 +29,13 @@ class Ball:
         if self.rect.bottom >= HEIGHT:
             self.speed_y *= -1
 
+        self.trail.append(
+            (self.rect.centerx, self.rect.centery)
+        )
+
+        if len(self.trail) > 15:
+            self.trail.pop(0)        
+
     def reset(self):
         self.rect.center = (WIDTH // 2, HEIGHT // 2)
 
@@ -34,3 +44,12 @@ class Ball:
 
     def draw(self, screen):
         pygame.draw.ellipse(screen, WHITE, self.rect)
+
+        for pos in self.trail:
+
+            pygame.draw.circle(
+                screen,
+                (100, 100, 100),
+                pos,
+                6
+            )
