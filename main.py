@@ -91,8 +91,10 @@ while True:
 
     elif state == "GAME":
 
-        game.handle_input()
-        game.update()
+        if not game.paused:
+            game.handle_input()
+            game.update()
+        
         game.draw()
 
         if game.finished:

@@ -183,21 +183,7 @@ class Game:
 
 
     def draw(self):
-        if self.paused:
 
-            pause_font = pygame.font.SysFont("Arial", 80)
-
-            pause_text = pause_font.render(
-                "PAUSED",
-                True,
-                RED
-            )
-
-            self.screen.blit(
-                pause_text,
-                (WIDTH // 2 - 150, HEIGHT // 2 - 40)
-            )
-                
         self.screen.fill(BLACK)
 
         self.draw_middle_line()
@@ -206,10 +192,35 @@ class Game:
         self.right_paddle.draw(self.screen)
 
         self.ball.draw(self.screen)
-        
+
         for particle in self.particles:
             particle.draw(self.screen)
 
         self.draw_scores()
+
+        # PAUSE OVERLAY
+        if self.paused:
+
+            overlay = pygame.Surface((WIDTH, HEIGHT))
+            overlay.set_alpha(120)
+            overlay.fill((0, 0, 0))
+
+            self.screen.blit(overlay, (0, 0))
+
+            pause_font = pygame.font.SysFont("Arial", 90)
+
+            pause_text = pause_font.render(
+                "PAUSED",
+                True,
+                (255, 255, 255)
+            )
+
+            self.screen.blit(
+                pause_text,
+                (
+                    WIDTH // 2 - pause_text.get_width() // 2,
+                    HEIGHT // 2 - pause_text.get_height() // 2
+                )
+            )
 
         pygame.display.flip()
