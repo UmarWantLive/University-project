@@ -1,6 +1,7 @@
 import pygame
 import sys
 
+from achievements_screen import AchievementsScreen
 from config import *
 from menu import Menu
 from game import Game
@@ -19,6 +20,7 @@ clock = pygame.time.Clock()
 menu = Menu(screen)
 stats_screen = StatisticsScreen(screen)
 history_screen = HistoryScreen(screen)
+achievements_screen = AchievementsScreen(screen)
 game_over_screen = GameOverScreen(screen)
 
 state = "MENU"
@@ -63,6 +65,9 @@ while True:
                     elif option == "MATCH HISTORY":
                         state = "HISTORY"
 
+                    elif option == "ACHIEVEMENTS":
+                        state = "ACHIEVEMENTS"
+
                     elif option == "EXIT":
                         pygame.quit()
                         sys.exit()
@@ -72,6 +77,10 @@ while True:
                     state = "MENU"
 
             elif state == "HISTORY":
+                if event.key == pygame.K_ESCAPE:
+                    state = "MENU"
+            elif state == "ACHIEVEMENTS":
+
                 if event.key == pygame.K_ESCAPE:
                     state = "MENU"
             if event.key == pygame.K_ESCAPE and game:
@@ -88,6 +97,8 @@ while True:
 
     elif state == "HISTORY":
         history_screen.draw()
+    elif state == "ACHIEVEMENTS":
+        achievements_screen.draw()
 
     elif state == "GAME":
 

@@ -15,6 +15,7 @@ class Menu:
             "START PVP",
             "STATISTICS",
             "MATCH HISTORY",
+            "ACHIEVEMENTS",
             "EXIT"
         ]
 

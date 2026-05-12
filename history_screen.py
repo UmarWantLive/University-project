@@ -39,7 +39,7 @@ class HistoryScreen:
             for index, match in enumerate(reversed(last_matches)):
                 line = (
                     f"Winner: {match['winner']} | "
-                    f"Score: {match['score']} | "
+                    f"Score: {match['left_score']} : {match['right_score']} | "
                     f"Mode: {match['mode']}"
                 )
 

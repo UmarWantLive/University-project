@@ -1,1 +1,14 @@
-[]
+[
+    {
+        "winner": "Right Player",
+        "left_score": 4,
+        "right_score": 10,
+        "mode": "PVP"
+    },
+    {
+        "winner": "Left Player",
+        "left_score": 10,
+        "right_score": 6,
+        "mode": "PVP"
+    }
+]

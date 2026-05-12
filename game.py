@@ -1,5 +1,6 @@
 import pygame
 import particles
+import json
 
 from paddle import Paddle
 from ball import Ball
@@ -8,6 +9,38 @@ from particles import Particle
 from config import *
 from storage import *
 
+def load_history():
+
+    try:
+        with open("history.json", "r") as f:
+            return json.load(f)
+
+    except:
+        return []
+
+
+def save_history(data):
+
+    with open("history.json", "w") as f:
+        json.dump(data, f, indent=4)
+
+def load_achievements():
+
+    try:
+        with open("achievements.json", "r") as f:
+            return json.load(f)
+
+    except:
+        return {
+            "first_win": False,
+            "ten_matches": False,
+            "hard_mode_win": False
+        }
+
+def save_achievements(data):
+
+    with open("achievements.json", "w") as f:
+        json.dump(data, f, indent=4)
 
 class Game:
     def __init__(self, screen, mode="AI"):
@@ -91,19 +124,40 @@ class Game:
                 )
             )
     def finish_match(self, winner):
+        ach = load_achievements()
+
+        ach["first_win"] = True
 
         self.finished = True
         self.winner = winner
 
         records = load_records()
-
+        history = load_history()
         records["matches_played"] += 1
+
+        if records["matches_played"] >= 10:
+            ach["ten_matches"] = True
+
+        if self.ball.base_speed > 10:
+            ach["hard_mode_win"] = True
 
         if winner == "Left Player":
             records["left_player_wins"] += 1
 
         else:
             records["right_player_wins"] += 1
+        
+        
+        history.append({
+            "winner": winner,
+            "left_score": self.left_score,
+            "right_score": self.right_score,
+            "mode": self.mode
+        })
+        save_records(records)
+        save_achievements(ach)
+        records = load_records()
+        save_history(history)
 
 
     def scoring(self):
