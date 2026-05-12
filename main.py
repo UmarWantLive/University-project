@@ -9,12 +9,15 @@ from statistics_screen import StatisticsScreen
 from history_screen import HistoryScreen
 from game_over import GameOverScreen
 
-
+# запуск pygame и всех его модулей
 pygame.init()
 
+# создание игрового окна
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Pong Coursework")
 
+# объект для ограничения FPS
+# чтобы игра работала одинаково быстро
 clock = pygame.time.Clock()
 
 menu = Menu(screen)
@@ -27,12 +30,16 @@ state = "MENU"
 
 game = None
 
+# бесконечный игровой цикл
+# работает пока пользователь не закроет игру
 while True:
-
+# ограничение кадров в секунду
     clock.tick(FPS)
 
+# обработка всех действий пользователя
+# клавиши, закрытие окна и т.д.
     for event in pygame.event.get():
-
+# закрытие игры через крестик окна
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
@@ -103,6 +110,7 @@ while True:
     elif state == "GAME":
 
         if not game.paused:
+# обработка управления игроками
             game.handle_input()
             game.update()
         

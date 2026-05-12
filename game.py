@@ -9,6 +9,7 @@ from particles import Particle
 from config import *
 from storage import *
 
+# загрузка истории матчей из JSON файла
 def load_history():
 
     try:
@@ -22,6 +23,7 @@ def load_history():
 def save_history(data):
 
     with open("history.json", "w") as f:
+# сохранение данных в JSON файл
         json.dump(data, f, indent=4)
 
 def load_achievements():
@@ -65,6 +67,7 @@ class Game:
         self.paused = False
 
     def handle_input(self):
+# получение состояния клавиатуры
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_w]:
@@ -87,11 +90,12 @@ class Game:
         if self.ball.rect.centery > self.right_paddle.rect.centery:
             self.right_paddle.move_down()
 
+# проверка столкновения мяча и ракетки
     def collisions(self):
 
         # столкновение с левой ракеткой
         if self.ball.rect.colliderect(self.left_paddle.rect):
-
+# изменение направления мяча
             self.ball.speed_x *= -1
 
             # убираем залипание
@@ -123,6 +127,8 @@ class Game:
                     self.ball.rect.centery
                 )
             )
+# завершение матча
+# сохранение статистики и истории
     def finish_match(self, winner):
         ach = load_achievements()
 
@@ -159,7 +165,7 @@ class Game:
         records = load_records()
         save_history(history)
 
-
+# система подсчёта очков
     def scoring(self):
 
         records = load_records()
@@ -247,7 +253,8 @@ class Game:
                 p for p in self.particles
                 if p.life > 0
             ]
-
+# рисование красивого фона
+# градиент + сетка
     def draw_background(self):
         pygame.draw.circle(
             self.screen,
@@ -279,7 +286,8 @@ class Game:
                 (x, 0),
                 (x, HEIGHT)
             )
-
+# главный рендер игры
+# рисует все объекты
     def draw(self):
         self.draw_background()
         self.draw_middle_line()
@@ -298,6 +306,7 @@ class Game:
         if self.paused:
 
             overlay = pygame.Surface((WIDTH, HEIGHT))
+# прозрачность pause overlay
             overlay.set_alpha(120)
             overlay.fill((0, 0, 0))
 
