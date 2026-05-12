@@ -110,22 +110,36 @@ class Game:
 
         records = load_records()
 
+        # гол правому игроку
         if self.ball.rect.left <= 0:
+
             self.right_score += 1
             records["total_goals"] += 1
+
+            # увеличение сложности
+            self.ball.base_speed += 0.5
+
             self.ball.reset()
 
+        # гол левому игроку
         if self.ball.rect.right >= WIDTH:
+
             self.left_score += 1
             records["total_goals"] += 1
+
+            # увеличение сложности
+            self.ball.base_speed += 0.5
+
             self.ball.reset()
 
+        # рекорд
         if self.left_score > records["best_score"]:
             records["best_score"] = self.left_score
 
         if self.right_score > records["best_score"]:
             records["best_score"] = self.right_score
 
+        # победа
         if self.left_score >= WIN_SCORE:
             self.finish_match("Left Player")
 

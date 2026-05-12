@@ -8,7 +8,7 @@ from config import *
 class Ball:
     def __init__(self):
         self.trail = []
-
+        self.base_speed = 7
         self.rect = pygame.Rect(
             WIDTH // 2,
             HEIGHT // 2,
@@ -37,10 +37,16 @@ class Ball:
             self.trail.pop(0)        
 
     def reset(self):
+
         self.rect.center = (WIDTH // 2, HEIGHT // 2)
 
-        self.speed_x = random.choice([-6, 6])
-        self.speed_y = random.choice([-6, 6])
+        self.speed_x = random.choice(
+            [-self.base_speed, self.base_speed]
+        )
+
+        self.speed_y = random.choice(
+            [-self.base_speed, self.base_speed]
+        )
 
     def draw(self, screen):
 
