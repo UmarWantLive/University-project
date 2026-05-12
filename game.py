@@ -29,6 +29,7 @@ class Game:
         self.winner = ""
         self.particles = []
         self.can_spawn_particles = True
+        self.paused = False
 
     def handle_input(self):
         keys = pygame.key.get_pressed()
@@ -158,8 +159,9 @@ class Game:
         self.screen.blit(right, (560, 50))
 
     def update(self):
+        if self.paused:
+            return
         self.ball.move()
-
         # разрешаем снова спавн, когда мяч в центре
         if abs(self.ball.rect.centerx - WIDTH // 2) < 50:
             self.can_spawn_particles = True
@@ -181,9 +183,21 @@ class Game:
 
 
     def draw(self):
+        if self.paused:
 
+            pause_font = pygame.font.SysFont("Arial", 80)
 
-        
+            pause_text = pause_font.render(
+                "PAUSED",
+                True,
+                RED
+            )
+
+            self.screen.blit(
+                pause_text,
+                (WIDTH // 2 - 150, HEIGHT // 2 - 40)
+            )
+                
         self.screen.fill(BLACK)
 
         self.draw_middle_line()

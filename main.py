@@ -74,7 +74,8 @@ while True:
             elif state == "HISTORY":
                 if event.key == pygame.K_ESCAPE:
                     state = "MENU"
-
+            if event.key == pygame.K_ESCAPE and game:
+                game.paused = not game.paused    
             elif state == "GAME_OVER":
                 if event.key == pygame.K_RETURN:
                     state = "MENU"
