@@ -194,12 +194,40 @@ class Game:
                 if p.life > 0
             ]
 
+    def draw_background(self):
+        pygame.draw.circle(
+            self.screen,
+            (0, 150, 255),
+            (WIDTH // 2, HEIGHT // 2),
+            5
+        )
 
+        for y in range(HEIGHT):
+
+            ratio = y / HEIGHT
+
+            color = (
+                0,
+                int(50 * ratio),
+                int(120 * ratio)
+            )
+            pygame.draw.line(
+                self.screen,
+                color,
+                (0, y),
+                (WIDTH, y)
+            )
+
+        for x in range(0, WIDTH, 40):
+            pygame.draw.line(
+                self.screen,
+                (20, 20, 20),
+                (x, 0),
+                (x, HEIGHT)
+            )
 
     def draw(self):
-
-        self.screen.fill(BLACK)
-
+        self.draw_background()
         self.draw_middle_line()
 
         self.left_paddle.draw(self.screen)
